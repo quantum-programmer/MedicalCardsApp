@@ -1,7 +1,7 @@
 object MainF: TMainForm
   Left = 0
   Top = 0
-  Caption = #1052#1077#1076#1080#1094#1080#1085#1089#1082#1080#1077' '#1082#1072#1088#1090#1099' '#1087#1072#1094#1080#1077#1085#1090#1086#1074
+  Caption = #1052#1077#1076#1080#1094#1080#1085#1089#1082#1080#1077' '#1082#1072#1088#1090#1099
   ClientHeight = 600
   ClientWidth = 800
   Color = clBtnFace
@@ -30,6 +30,10 @@ object MainF: TMainForm
     object tsPatientsList: TcxTabSheet
       Caption = #1057#1087#1080#1089#1086#1082' '#1087#1072#1094#1080#1077#1085#1090#1086#1074
       ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object pnlControls: TPanel
         Left = 0
         Top = 0
@@ -49,14 +53,14 @@ object MainF: TMainForm
         object btnEdit: TButton
           Left = 89
           Top = 8
-          Width = 75
+          Width = 94
           Height = 25
           Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
           TabOrder = 1
           OnClick = btnEditClick
         end
         object btnDelete: TButton
-          Left = 170
+          Left = 189
           Top = 8
           Width = 75
           Height = 25
@@ -65,7 +69,7 @@ object MainF: TMainForm
           OnClick = btnDeleteClick
         end
         object edtSearch: TEdit
-          Left = 251
+          Left = 270
           Top = 10
           Width = 200
           Height = 21

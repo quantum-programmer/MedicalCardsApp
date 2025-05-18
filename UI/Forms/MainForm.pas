@@ -4,13 +4,13 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxPC, cxGraphics, cxControls,
-  cxLookAndFeels, cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
-  cxDataStorage, cxEdit, cxNavigator, dxDateRanges, cxGridCustomTableView,
-  cxGridTableView, cxGridDBTableView, cxGridLevel, cxClasses, cxGridCustomView,
-  cxGrid, Vcl.StdCtrls, Vcl.ExtCtrls, System.Generics.Collections,
-  Patient, IPatientServ, PatientCardFrame, dxBarBuiltInMenu, dxUIAClasses,
-  dxScrollbarAnnotations, Data.DB, cxDBData;
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxPC, cxGraphics,
+  cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxStyles, cxCustomData,
+  cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator, dxDateRanges,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridLevel,
+  cxClasses, cxGridCustomView, cxGrid, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Patient, IPatientServ, PatientCardFrame,
+  dxBarBuiltInMenu, dxUIAClasses, dxScrollbarAnnotations, Data.DB, cxDBData;
 
 type
   TMainForm = class(TForm)
@@ -52,7 +52,7 @@ uses
 constructor TMainForm.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FPatientService := PatientService; // Получаем сервис из DI-контейнера
+  FPatientService := PatientService;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -67,7 +67,6 @@ begin
   cxGridDBTableView.Columns[1].Caption := 'ФИО';
   cxGridDBTableView.Columns[1].Width := 200;
 
-  // Загрузка данных
   LoadPatients;
 end;
 
@@ -77,11 +76,8 @@ var
   Patient: TPatient;
 begin
   Patients := FPatientService.GetAllPatients;
-  
-  // Очистка грида
   cxGridDBTableView.DataController.RecordCount := 0;
 
-  // Заполнение грида
   for Patient in Patients do
   begin
     if (Filter = '') or (Pos(LowerCase(Filter), LowerCase(Patient.Name)) > 0) then
@@ -113,26 +109,26 @@ begin
   Patient := FPatientService.GetPatientById(PatientId);
   if Patient = nil then Exit;
 
-  // Создаем новую вкладку
-  Tab := cxPageControl.AddTabSheet;
+  // Создаем вкладку DevExpress
+  Tab := TcxTabSheet.Create(cxPageControl);
   Tab.Caption := Patient.Name;
+  Tab.PageControl := cxPageControl;
 
-  // Создаем фрейм карты пациента
+  // Создаем фрейм
   Frame := TPatientCardFrame.Create(Tab);
   Frame.Parent := Tab;
   Frame.Align := alClient;
   Frame.LoadPatient(Patient);
 
-  // Назначаем обработчики событий
   Frame.OnSave := procedure
   begin
     FPatientService.SavePatient(Patient);
-    cxPageControl.RemoveTab(Tab);
+    Tab.Free;
   end;
 
   Frame.OnCancel := procedure
   begin
-    cxPageControl.RemoveTab(Tab);
+    Tab.Free;
   end;
 end;
 
@@ -142,7 +138,7 @@ var
 begin
   NewPatient := TPatient.Create;
   try
-    NewPatient.Id := Random(1000000); // В реальном проекте используйте GUID
+    NewPatient.Id := Random(1000000);
     OpenPatientCard(NewPatient.Id);
   except
     NewPatient.Free;
