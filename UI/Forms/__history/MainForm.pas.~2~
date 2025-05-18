@@ -1,0 +1,44 @@
+﻿unit UI.Forms.MainForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  cxPC, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
+  Core.Services.IPatientService, Core.Entities.Patient;
+
+type
+  TMainForm = class(TForm)
+    cxPageControl: TcxPageControl;
+    tsPatientsList: TcxTabSheet;
+    // ... (остальные компоненты)
+    procedure FormCreate(Sender: TObject);
+  private
+    FPatientService: IPatientService;
+  public
+    constructor Create(AOwner: TComponent); override;
+  end;
+
+var
+  MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  DependencyInjection;
+
+constructor TMainForm.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  FPatientService := PatientService; // Инъекция зависимости
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  // Инициализация интерфейса
+end;
+
+end.

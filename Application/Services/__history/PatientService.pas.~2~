@@ -1,0 +1,55 @@
+                                                                 unit Application.Services.PatientService;
+
+interface
+
+uses
+  Core.Repositories.IPatientRepository, Core.Entities.Patient;
+
+type
+  IPatientService = interface
+    ['{7D1A3E2F-4C8B-4E9D-9F6A-1C3B5E7D9F2E}']
+    function GetAllPatients: TArray<TPatient>;
+    function GetPatientById(Id: Integer): TPatient;
+    procedure SavePatient(Patient: TPatient);
+    procedure DeletePatient(Id: Integer);
+  end;
+
+  TPatientService = class(TInterfacedObject, IPatientService)
+  private
+    FRepository: IPatientRepository;
+  public
+    constructor Create(Repository: IPatientRepository);
+    function GetAllPatients: TArray<TPatient>;
+    function GetPatientById(Id: Integer): TPatient;
+    procedure SavePatient(Patient: TPatient);
+    procedure DeletePatient(Id: Integer);
+  end;
+
+implementation
+
+constructor TPatientService.Create(Repository: IPatientRepository);
+begin
+  FRepository := Repository;
+end;
+
+function TPatientService.GetAllPatients: TArray<TPatient>;
+begin
+  Result := FRepository.GetAll;
+end;
+
+function TPatientService.GetPatientById(Id: Integer): TPatient;
+begin
+  Result := FRepository.GetById(Id);
+end;
+
+procedure TPatientService.SavePatient(Patient: TPatient);
+begin
+  FRepository.AddOrUpdate(Patient);
+end;
+
+procedure TPatientService.DeletePatient(Id: Integer);
+begin
+  FRepository.Delete(Id);
+end;
+
+end.

@@ -1,0 +1,31 @@
+unit DependencyInjection;
+
+interface
+
+uses
+  Core.Services.IPatientService,
+  Application.Services.PatientService,
+  Core.Repositories.IPatientRepository,
+  Infrastructure.Repositories.JsonPatientRepository,
+  Infrastructure.Logging.FileLogger;
+
+var
+  PatientService: IPatientService;
+  Logger: ILogger;
+
+procedure InitializeDependencies;
+
+implementation
+
+procedure InitializeDependencies;
+begin
+  Logger := TFileLogger.Create('app.log');
+  PatientService := TPatientService.Create(
+    TJsonPatientRepository.Create('patients.json')
+  );
+end;
+
+initialization
+  InitializeDependencies;
+
+end.

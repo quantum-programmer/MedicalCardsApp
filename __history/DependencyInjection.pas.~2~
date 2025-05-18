@@ -1,0 +1,26 @@
+unit DependencyInjection;
+
+interface
+
+procedure ConfigureDependencies;
+
+implementation
+
+uses
+  Spring.Container,
+  Core.Repositories.IPatientRepository,
+  Infrastructure.Repositories.JsonPatientRepository,
+  Infrastructure.Logging.FileLogger,
+  Application.Services.PatientService;
+
+procedure ConfigureDependencies;
+begin
+  GlobalContainer
+    .RegisterType<ILogger, TFileLogger>.InjectConstructor(['app.log'])
+    .RegisterType<IPatientRepository, TJsonPatientRepository>.InjectConstructor(['patients.json'])
+    .RegisterType<IPatientService, TPatientService>
+    .RegisterType<TPatientUseCases>
+    .Build;
+end;
+
+end.

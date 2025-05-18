@@ -1,0 +1,35 @@
+unit Infrastructure.Logging.Logger;
+
+interface
+
+uses
+  System.SysUtils, System.IOUtils;
+
+type
+  ILogger = interface
+    procedure Log(const Msg: string);
+  end;
+
+  TFileLogger = class(TInterfacedObject, ILogger)
+  private
+    FLogFile: string;
+  public
+    constructor Create(const LogFile: string);
+    procedure Log(const Msg: string);
+  end;
+
+implementation
+
+constructor TFileLogger.Create(const LogFile: string);
+begin
+  FLogFile := LogFile;
+  if not TDirectory.Exists(ExtractFilePath(FLogFile)) then
+    TDirectory.CreateDirectory(ExtractFilePath(FLogFile));
+end;
+
+procedure TFileLogger.Log(const Msg: string);
+begin
+  TFile.AppendAllText(FLogFile, Format('%s: %s%s', [DateTimeToStr(Now), Msg, sLineBreak]));
+end;
+
+end.

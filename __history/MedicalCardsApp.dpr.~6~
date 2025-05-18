@@ -1,0 +1,40 @@
+﻿program main;
+
+uses
+  Spring.Container,
+  Vcl.Forms,
+  Core.Entities.Patient in 'Core\Entities\Patient.pas',
+  UI.Forms in 'UI\Forms\.pas',
+  UI.Frames in 'UI\Frames\.pas',
+  Core.Repositories.IPatientRepository in 'Core\Repositories\IPatientRepository.pas',
+  Core.Services.IPatientService in 'Core\Services\IPatientService.pas',
+  Infrastructure.Repositories.JsonPatientRepository in 'Infrastructure\Repositories\JsonPatientRepository.pas',
+  Infrastructure.Logging.FileLogger in 'Infrastructure\Logging\FileLogger.pas',
+  Application.Services.PatientService in 'Application\Services\PatientService.pas',
+  Application.UseCases.PatientUseCases in 'Application\UseCases\PatientUseCases.pas',
+  DependencyInjection in 'DependencyInjection.pas',
+  MainForm in 'UI\Forms\MainForm.pas' {Form1};
+
+{$R *.res}
+
+var
+  MainForm: TMainForm;
+
+begin
+  ReportMemoryLeaksOnShutdown := True;
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  
+  ConfigureDependencies;
+  
+  try
+    MainForm := GlobalContainer.Resolve<TMainForm>;
+    Application.MainForm := MainForm;
+    MainForm.Show;
+    Application.CreateForm(TForm1, Form1);
+  Application.Run;
+  except
+    on E: Exception do
+      LogError('Application error: ' + E.Message);
+  end;
+end.

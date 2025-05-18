@@ -1,0 +1,33 @@
+﻿program Main;
+
+uses
+  Vcl.Forms,
+  // Core
+  Core.Entities.Patient in 'Core\Entities\Patient.pas',
+  Core.Repositories.IPatientRepository in 'Core\Repositories\IPatientRepository.pas',
+  Core.Services.IPatientService in 'Core\Services\IPatientService.pas',
+
+  // Infrastructure
+  Infrastructure.Repositories.JsonPatientRepository in 'Infrastructure\Repositories\JsonPatientRepository.pas',
+  Infrastructure.Logging.FileLogger in 'Infrastructure\Logging\FileLogger.pas',
+
+  // Application
+  Application.Services.PatientService in 'Application\Services\PatientService.pas',
+
+  // UI
+  UI.Forms.MainForm in 'UI\Forms\MainForm.pas' {MainForm},
+  UI.Forms.MainForm.dfm in 'UI\Forms\MainForm.dfm',
+  UI.Frames.PatientCardFrame in 'UI\Frames\PatientCardFrame.pas' {PatientCardFrame},
+  UI.Frames.PatientCardFrame.dfm in 'UI\Frames\PatientCardFrame.dfm',
+
+  // DI
+  DependencyInjection in 'DependencyInjection.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TMainForm, MainForm);
+  Application.Run;
+end.

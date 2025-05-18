@@ -1,0 +1,146 @@
+unit UI.Forms.MainForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxPC, cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter,
+  cxData, cxDataStorage, cxEdit, cxNavigator, dxDateRanges,
+  cxDataControllerConditionalFormattingRulesManagerDialog, Data.DB, cxDBData,
+  cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Core.Entities.Patient, Application.Services.PatientService,
+  Infrastructure.Logging.Logger;
+
+type
+  TMainForm = class(TForm)
+    cxPageControl: TcxPageControl;
+    tsPatientsList: TcxTabSheet;
+    pnlControls: TPanel;
+    btnAdd: TButton;
+    btnEdit: TButton;
+    btnDelete: TButton;
+    edtSearch: TEdit;
+    cxGrid: TcxGrid;
+    cxGridDBTableView: TcxGridDBTableView;
+    cxGridLevel: TcxGridLevel;
+    procedure FormCreate(Sender: TObject);
+    procedure btnAddClick(Sender: TObject);
+    procedure btnEditClick(Sender: TObject);
+    procedure btnDeleteClick(Sender: TObject);
+    procedure edtSearchChange(Sender: TObject);
+    procedure cxGridDBTableViewDblClick(Sender: TObject);
+  private
+    FPatientService: IPatientService;
+    FLogger: ILogger;
+    procedure LoadPatients(const Filter: string = '');
+    procedure OpenPatientCard(PatientId: Integer);
+  public
+    constructor Create(AOwner: TComponent; PatientService: IPatientService; Logger: ILogger); reintroduce;
+  end;
+
+var
+  MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  UI.Frames.PatientCardFrame;
+
+constructor TMainForm.Create(AOwner: TComponent; PatientService: IPatientService; Logger: ILogger);
+begin
+  inherited Create(AOwner);
+  FPatientService := PatientService;
+  FLogger := Logger;
+  FLogger.Log('MainForm created');
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  LoadPatients;
+end;
+
+procedure TMainForm.LoadPatients(const Filter: string);
+var
+  Patients: TArray<TPatient>;
+begin
+  Patients := FPatientService.GetAllPatients;
+  // Загрузка данных в грид (реализация зависит от вашего cxGrid)
+end;
+
+procedure TMainForm.OpenPatientCard(PatientId: Integer);
+var
+  Tab: TcxTabSheet;
+  Frame: TPatientCardFrame;
+  Patient: TPatient;
+begin
+  Patient := FPatientService.GetPatientById(PatientId);
+  if Patient = nil then Exit;
+
+  Tab := cxPageControl.AddTabSheet;
+  Tab.Caption := Patient.Name;
+
+  Frame := TPatientCardFrame.Create(Tab);
+  Frame.Parent := Tab;
+  Frame.Align := alClient;
+  Frame.LoadPatient(Patient);
+  Frame.OnSave := procedure
+    begin
+      FPatientService.SavePatient(Patient);
+      cxPageControl.RemoveTab(Tab);
+      FLogger.Log(Format('Patient saved ID=%d', [Patient.Id]));
+    end;
+  Frame.OnCancel := procedure
+    begin
+      cxPageControl.RemoveTab(Tab);
+      FLogger.Log(Format('Patient edit canceled ID=%d', [Patient.Id]));
+    end;
+
+  FLogger.Log(Format('Patient card opened ID=%d', [Patient.Id]));
+end;
+
+procedure TMainForm.btnAddClick(Sender: TObject);
+var
+  Patient: TPatient;
+begin
+  Patient := TPatient.Create;
+  Patient.Id := Random(100000); // Генерация ID (в реальном проекте используйте GUID или автоинкремент)
+  OpenPatientCard(Patient.Id);
+end;
+
+procedure TMainForm.btnEditClick(Sender: TObject);
+var
+  PatientId: Integer;
+begin
+  PatientId := 0; // Получить ID из грида
+  if PatientId > 0 then
+    OpenPatientCard(PatientId);
+end;
+
+procedure TMainForm.btnDeleteClick(Sender: TObject);
+var
+  PatientId: Integer;
+begin
+  PatientId := 0; // Получить ID из грида
+  if PatientId > 0 then
+  begin
+    FPatientService.DeletePatient(PatientId);
+    LoadPatients;
+    FLogger.Log(Format('Patient deleted ID=%d', [PatientId]));
+  end;
+end;
+
+procedure TMainForm.edtSearchChange(Sender: TObject);
+begin
+  LoadPatients(edtSearch.Text);
+end;
+
+procedure TMainForm.cxGridDBTableViewDblClick(Sender: TObject);
+begin
+  btnEdit.Click;
+end;
+
+end.

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.189,=E:\Workspace\Delphi10.2\MedicalCardsApp\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.020,E:\Workspace\Delphi10.2\MedicalCardsApp\Unit1.dfm=E:\Workspace\Delphi10.2\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.388,=E:\Workspace\Delphi10.2\MedicalCardsApp\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.613,E:\Workspace\Delphi10.2\MedicalCardsApp\MedicalCardsApp.dproj=E:\Workspace\Delphi10.2\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.563,E:\Workspace\Delphi10.2\MedicalCardsApp\UI\Frames\PatientCardFrame.pas=E:\Workspace\Delphi10.2\MedicalCardsApp\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.563,E:\Workspace\Delphi10.2\MedicalCardsApp\UI\Frames\PatientCardFrame.dfm=E:\Workspace\Delphi10.2\MedicalCardsApp\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.266,E:\Workspace\Delphi10.2\MedicalCardsApp\UI\Forms\MainForm.dfm=E:\Workspace\Delphi10.2\MedicalCardsApp\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.266,E:\Workspace\Delphi10.2\MedicalCardsApp\UI\Forms\MainForm.pas=E:\Workspace\Delphi10.2\MedicalCardsApp\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.830,E:\Workspace\Delphi10.2\MedicalCardsApp\Core\Services\IPatientServ.pas=E:\Workspace\Delphi10.2\MedicalCardsApp\Core\Services\IPatientService.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.020,E:\Workspace\Delphi10.2\MedicalCardsApp\Unit1.pas=E:\Workspace\Delphi10.2\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.474,=E:\Workspace\Delphi10.2\MedicalCardsApp\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.628,=E:\Workspace\Delphi10.2\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

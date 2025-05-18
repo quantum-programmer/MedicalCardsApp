@@ -1,0 +1,15 @@
+﻿program Main;
+
+uses
+  Vcl.Forms,
+  UI.Forms.MainForm in 'UI/Forms/MainForm.pas',
+  DependencyInjection in 'DependencyInjection.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TMainForm, MainForm);
+  Application.Run;
+end.
