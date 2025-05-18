@@ -1,24 +1,19 @@
-﻿program Main;
+﻿program MedicalCardsApp;
 
 uses
   Vcl.Forms,
-  Patient in 'Core\Entities\Patient.pas',
-  IPatientRepo in 'Core\Repositories\IPatientRepo.pas',
-  IPatientServ in 'Core\Services\IPatientServ.pas',
-  JsonPatientRepository in 'Infrastructure\Repositories\JsonPatientRepository.pas',
-  FileLogger in 'Infrastructure\Logging\FileLogger.pas',
-  PatientService in 'Application\Services\PatientService.pas',
-  MainForm in 'UI\Forms\MainForm.pas' {MainForm},
-  MainForm.dfm in 'UI\Forms\MainForm.dfm',
-  PatientCardFrame in 'UI\Frames\PatientCardFrame.pas' {PatientCardFrame},
-  PatientCardFrame.dfm in 'UI\Frames\PatientCardFrame.dfm',
-  DependencyInjection in 'DependencyInjection.pas';
+  DependencyInjection in 'DependencyInjection.pas',  // Должен быть первым
+  MainForm in 'UI/Forms/MainForm.pas',
+  PatientCardFrame in 'UI/Frames/PatientCardFrame.pas',
+  Patient in 'Core/Entities/Patient.pas',
+  IPatientRepository in 'Core/Repositories/IPatientRepository.pas',
+  JsonPatientRepository in 'Infrastructure/Repositories/JsonPatientRepository.pas',
+  FileLogger in 'Infrastructure/Logging/FileLogger.pas',
+  PatientService in 'Application/Services/PatientService.pas';
 
 {$R *.res}
 
 begin
-  Application.Initialize;
-  Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TMainForm, MainF);
+  // Инициализация и создание формы уже выполнены в DependencyInjection.pas
   Application.Run;
 end.
